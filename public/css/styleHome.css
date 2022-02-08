@@ -1,0 +1,21 @@
+.search-container{
+  background-image: url(/images/imagem_search.jpg);
+  background-size:cover;
+  background-position: center;
+  height:400px;
+  padding:50px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.search-container h1{
+    color:rgb(255, 251, 0);
+    margin-bottom: 30px;
+    font-weight: 900;
+}
+
+
+.search-container form{
+    width: 50%;
+    margin:0 auto;
+}
