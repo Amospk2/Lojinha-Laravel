@@ -16,7 +16,6 @@
 
             @if(@auth()->check())
             @foreach(Auth()->user()->pedidos as $produtos_pedidos)
-            
                 @if($produtos_pedidos->pivot->products_id == $produto->id and $produtos_pedidos->pivot->comprado == TRUE)
                     <p class="already-joined-msg" {{$comprado = TRUE}}> Produto Comprado, veja seu carrinho.</p>
                     @break
@@ -33,14 +32,10 @@
                         <input type="number" class="form-control" id="quantidade_comprada" name="quantidade_comprada" value = 1 min=1 max={{$produto->quantity}}>
                     </div>
 
-                    <input id="products_id" name="products_id" value="{{$produto->id}}" style="display:none;"></input>
+                    <input type="number" id="products_id" name="products_id" value="{{$produto->id}}" style="display:none;"></input>
 
-                    <a href="/products_carrinho/join" 
-                    class = "btn btn-primary" 
-                    id="event-submit"
-                    onClick="event.preventDefault();
-                    this.closest('form').submit();"
-                    >Realizar Compra</a>
+                    <a href="/products_carrinho/join" class = "btn btn-primary" id="event-submit" 
+                    onClick="event.preventDefault();this.closest('form').submit();">Realizar Compra</a>
             </form>
             @endif
 
@@ -50,17 +45,8 @@
                     >Realizar Compra</a>
             @endif
 
-
-
-            
-
         </div>
-
-    
     </div>
-
-
-
 </div>
 @endsection
 

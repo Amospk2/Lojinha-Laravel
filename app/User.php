@@ -38,6 +38,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    /**
+     * Relação dos pedidos feitos pelos clientes:
+     *
+     * 
+     */
     public function pedidos()
     {
         return $this->belongsToMany(Products::class)->withPivot(

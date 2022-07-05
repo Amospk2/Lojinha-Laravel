@@ -43,11 +43,6 @@
     @enderror
   </div>
 
-  <div class="form-group">
-        <label for="date">Validade </label>
-        <input type="date" class="form-control" id="shelf_life" name ="shelf_life" value="{{$produto->shelf_life}}">
-    </div>
-
     <div class="form-group">
             <label for="title">Disponivel para venda?</label>
            <select name="available" id="available" class="form-control">

@@ -12,7 +12,7 @@ use Auth;
 class ProductsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostra a pagina com a tabela de produtos cadastros. Disponivel apenas para administradores.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,7 +22,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostra a pagina de cadastro dos produtos.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,7 +32,8 @@ class ProductsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Usado para cadastrar novos produtos, pegamos a informação da pagina de cadastro e 
+     * adicionamos ao banco.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -44,7 +45,6 @@ class ProductsController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
-        $product->shelf_life = $request->shelf_life;
         $product->description = $request->description;
         $product->available = $request->available;
         
@@ -70,6 +70,11 @@ class ProductsController extends Controller
         return redirect('/home');
     }
 
+    /**
+     * Listagem dos produtos cadastrados, usado para alimentar a tabela de produtos!
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function list()
     {
         
@@ -100,17 +105,17 @@ class ProductsController extends Controller
     }
 
 
+    /**
+     * Listagem de usuarios cadastrados no sistema, usado para alimentar a tabela de usuarios!
+     *
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function userlist()
     {
-        $users = User::get();
-        
-        
-
-        
-
-
+        $users = User::all();
+  
         return Datatables::of($users)->editColumn('opcoes', function($users){
-
 
             return '
             <td class="project-actions text-right">
@@ -130,6 +135,14 @@ class ProductsController extends Controller
         })->escapeColumns([0])->make(true);
     }
 
+    /**
+     * Muda uma Role e a Permission de um determinado usuario,
+     * se ele tem a role Admin ele muda para a User. Caso contrario, mudará de User
+     * para Admin.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function change_role_permission($id)
     {
         $user = User::find($id);
@@ -154,25 +167,21 @@ class ProductsController extends Controller
         return back()->withInput();
     }
 
-    public function delete_user($id)
-    {
-        User::destroy($id);
-    }
 
     /**
-     * Display the specified resource.
+     * Mostra um determinado produto na pagina Show!
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $produto = Products::where('id', $id)->get();
-        return view('show', ['produto'=> $produto[0]]);
+        $produto = Products::where('id', $id)->first();
+        return view('show', ['produto'=> $produto]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Edição de produtos cadastrados no software.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -185,7 +194,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update de produtos cadastrados no software!
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -197,7 +206,6 @@ class ProductsController extends Controller
         $product->name = $request->name;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
-        $product->shelf_life = $request->shelf_life;
         $product->description = $request->description;
         $product->available = $request->available;
         
@@ -222,7 +230,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deleta um determinado produto cadastrado no software!
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -232,13 +240,45 @@ class ProductsController extends Controller
         Products::destroy($id);
     }
 
+    /**
+     * Usado para apagar um usuario do sistema, opção 'Delete' na tabela de usuarios.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete_user($id)
+    {
+        User::destroy($id);
+    }
+
+
+    /**
+     * Adiciona valores para a relacionamento "pedidos", um usuario e um produto que foi comprado.
+     * Vão aparecer na tabela products_user.
+     *
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    
     public function join(Request $request)
-    {   
+    { 
         $user = Auth()->user();
         $user->pedidos()->attach([
             $request->products_id => ['comprado' => true, 'quantidade_comprada'=> $request->quantidade_comprada],
         ]); 
         
         return redirect('/home');
+    }
+
+
+    /**
+     * Mostra os produtos comprados pelo usuario atual.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function carrinho()
+    {
+        return view('carrinho', ['produtos'=>Auth()->user()->pedidos]);
     }
 }

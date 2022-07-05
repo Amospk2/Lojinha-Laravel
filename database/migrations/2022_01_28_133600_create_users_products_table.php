@@ -13,10 +13,10 @@ class CreateUsersProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_products', function (Blueprint $table) {
+        Schema::create('products_user', function (Blueprint $table) {
             $table->id();
             $table->foreignID('user_id')->constrained('users');
-            $table->foreignID('product_id')->constrained('products');
+            $table->foreignID('products_id')->constrained('products');
             $table->boolean('comprado')->default(false);
             $table->integer('quantidade_comprada');
             $table->timestamps();
@@ -30,6 +30,6 @@ class CreateUsersProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_products');
+        Schema::dropIfExists('products_user');
     }
 }

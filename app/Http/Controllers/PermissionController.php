@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 class PermissionController extends Controller
 {   
 
+    /**
+     * Cria as permission e os usuarios com elas!
+     *
+	 * 
+	 * 
+     * @return \Illuminate\Http\Response
+     */
     public function Permission()
     {   
     	$admin_permission = Permission::where('slug','admin')->first();
@@ -47,6 +54,9 @@ class PermissionController extends Controller
 		$dev_perm = Permission::where('slug','admin')->first();
 		$manager_perm = Permission::where('slug','user')->first();
 
+
+
+		//Adição de usuarios com suas roles
 		$developer = new User();
 		$developer->name = 'Harsukh Makwana';
 		$developer->email = 'harsukh21@gmail.com';
@@ -63,7 +73,14 @@ class PermissionController extends Controller
 		$manager->roles()->attach($user_role);
 		$manager->permissions()->attach($manager_perm);
 
-		
+		$user = new User();
+		$developer->name = 'Amós';
+		$developer->email = 'Amos@gmail.com';
+		$developer->password = bcrypt('123456');
+		$developer->save();
+		$developer->roles()->attach($admin_role);
+		$developer->permissions()->attach($dev_perm);
+
 		return redirect()->back();
     }
 }

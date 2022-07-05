@@ -104,7 +104,7 @@ $(document).ready(function ($) {
 
 
       var table = $("#usertable").DataTable({
-        ajax: "manage_users/list",
+        ajax: "/manage_users/list",
         processing:true,
         serverSide:true,
         columns:[

@@ -41,10 +41,6 @@
     @enderror
   </div>
 
-  <div class="form-group">
-        <label for="shelf_life">Validade </label>
-        <input type="date" class="form-control" id="shelf_life" name ="shelf_life">
-    </div>
 
     <div class="form-group">
             <label for="title">Disponivel para venda?</label>
